@@ -1,0 +1,28 @@
+{
+  "name": "uicreator",
+  "version": "1.0.0",
+  "description": "Application to help developers to create UI",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel public/index.html --port 3000",
+    "build": "parcel build public/index.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.3.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^28.1.6",
+    "@types/node": "^18.0.6",
+    "@types/react": "^18.0.15",
+    "@types/react-dom": "^18.0.6",
+    "parcel": "^2.6.2",
+    "process": "^0.11.10",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.7.4"
+  }
+}
