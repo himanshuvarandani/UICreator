@@ -1,0 +1,105 @@
+.container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+.leftPanel {
+  background-color: #d9d9d9;
+  height: 100vh;
+  padding: 5px;
+  width: 15vw;
+}
+
+.leftPanelHeading {
+  text-align: center;
+}
+
+.leftPanelTags {
+  padding-left: 10px;
+}
+
+.leftPanelTag {
+  cursor: pointer;
+  font-size: small;
+  margin-bottom: 2px;
+  margin-top: 2px;
+}
+
+.frame {
+  align-items: center;
+  background-color: #696969;
+  display: flex;
+  justify-content: center;
+  width: 70vw;
+}
+
+.rightPanel {
+  background-color: #d9d9d9;
+  height: 100vh;
+  padding: 5px;
+  width: 15vw;
+}
+
+.rightPanelHeading {
+  text-align: center;
+}
+
+.rightPanelDiv1 {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.rightPanelLabel {
+  font-size: small;
+  margin-bottom: 2px;
+}
+
+.rightPanelDropdown {
+  border: 2px solid #a9a9a9;
+  border-radius: 20px;
+  padding: 2px;
+  width: 80%;
+}
+
+.rightPanelButton {
+  background-color: #a9a9a9;
+  border: 2px solid #898989;
+  border-radius: 8px;
+  font-size: small;
+  margin-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 5px;
+}
+
+.rightPanelDiv2 {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.rightPanelTag {
+  font-size: small;
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+.rightPanelDiv3 {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.rightPanelInput {
+  border: 2px solid #a9a9a9;
+  border-radius: 10px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  padding: 8px;
+}
