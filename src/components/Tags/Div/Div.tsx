@@ -1,11 +1,4 @@
-import React from "react"
-
-interface PropType extends React.HTMLAttributes<HTMLDivElement> {
-  children?: Array<JSX.Element>,
-  id: string,
-}
-
-const DivTag = ({ children, id, style={}, ...rest }: PropType) => {
+const DivTag = ({ children, id, style={}, ...rest }: DivPropType) => {
   return (
     <div id={id} style={style} {...rest}>
       {children}

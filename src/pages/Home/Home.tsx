@@ -10,21 +10,6 @@ import H6Tag from "../../components/Tags/Headings/H6"
 import PTag from "../../components/Tags/P/P"
 import "./Home.css"
 
-interface AllTagsType { [key: string]: (props: TagPropType) => JSX.Element }
-
-interface FrameElementPropType { [key: string]: TagPropType }
-
-interface FrameElementType extends Array<{
-  tag: string,
-  tagId: string
-}> {}
-
-interface TagPropType extends React.HTMLAttributes<HTMLElement> {
-  children?: JSX.Element[],
-  id: string,
-  value?: string
-}
-
 const Home = () => {
   const [allTags, setAllTags] = useState<AllTagsType>({})
   const [frameElements, setFrameElements] = useState<FrameElementType>([])

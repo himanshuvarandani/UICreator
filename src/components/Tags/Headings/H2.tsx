@@ -1,11 +1,4 @@
-import React from "react"
-
-interface PropType extends React.HTMLAttributes<HTMLHeadingElement> {
-  id: string,
-  value?: string,
-}
-
-const H2Tag = ({ id, style={}, value="", ...rest }: PropType) => {
+const H2Tag = ({ id, style={}, value="", ...rest }: HeadingPropType) => {
   return (
     <h2 id={id} style={style} {...rest}>
       {value}

@@ -1,11 +1,4 @@
-import React from "react"
-
-interface PropType extends React.HTMLAttributes<HTMLHeadingElement> {
-  id: string,
-  value?: string,
-}
-
-const H5Tag = ({ id, style={}, value="", ...rest }: PropType) => {
+const H5Tag = ({ id, style={}, value="", ...rest }: HeadingPropType) => {
   return (
     <h5 id={id} style={style} {...rest}>
       {value}
