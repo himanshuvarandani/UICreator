@@ -9,8 +9,8 @@ Application to design UI and get corresponding code. Makes development easy.
 
 ### Installation
   #### Clone repo
-      git clone https://github.com/himanshuvarandani/JobExia.git
-      cd JobExia
+      git clone https://github.com/himanshuvarandani/UICreator.git
+      cd UICreator
   #### Install Requirements
       npm install
   #### Start Application
