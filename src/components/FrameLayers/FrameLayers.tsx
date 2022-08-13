@@ -13,8 +13,38 @@ const FrameLayers = ({
     setSelectedElement(element)
   }
 
-  const dragEnterMoveNext = () => {
-    
+  const dragEnterMoveNext = (element: FrameElementType) => {
+    if (element === selectedElement) return    
+
+    if (element.parentTagId !== selectedElement.parentTagId) {
+      dragEnterMoveToChild(element.tagId)
+      return
+    }
+
+    if (!element.parentTagId) {
+      setFrameElements((prevElements) => {
+        const from = prevElements.indexOf(selectedElement)
+        const to = prevElements.indexOf(element)+1
+        prevElements.splice(from, 1)
+        prevElements.splice(to, 0, selectedElement)
+        return [ ...prevElements ]
+      })
+    } else {
+      setFrameElementProps((prevProps) => {
+        const children = prevProps[element.parentTagId].frameElementChildren
+        const from = children?.indexOf(selectedElement) || 0
+        const to = children?.indexOf(element) || 0
+        children?.splice(from, 1)
+        children?.splice(to+1, 0, selectedElement)
+        return {
+          ...prevProps,
+          [element.parentTagId]: {
+            ...prevProps[element.parentTagId],
+            frameElementChildren: children,
+          }
+        }
+      })
+    }
   }
 
   const dragEnterMoveToChild = (tagId: string) => {
@@ -80,32 +110,37 @@ const FrameLayers = ({
     <div className="tags">
       {frameElements.map((element, index) => (
         <div key={index}>
-          <div>
-            <p
-              className="tag"
-              draggable
-              key={element.tagId}
-              onClick={() => setSelectedElement(element)}
-              onDragStart={() => dragStart(element)}
-              onDragOver={(e) => e.preventDefault()}
-              onDrop={() => dragEnterMoveToChild(element.tagId)}
-            >
-              - {element.tagId}
-            </p>
-            {!frameElementProps[element.tagId].frameElementChildren?.length ? null : (
-              <div>
-                <FrameLayers
-                  frameElements={frameElementProps[element.tagId].frameElementChildren || []}
-                  frameElementProps={frameElementProps}
-                  selectedElement={selectedElement}
-                  setFrameElements={setFrameElements}
-                  setFrameElementProps={setFrameElementProps}
-                  setSelectedElement={setSelectedElement}
-                />
-              </div>
-            )}
-          </div>
-          <div className="elementBreak" onDragEnter={dragEnterMoveNext} />
+          <p
+            className="tag"
+            draggable
+            key={element.tagId}
+            onClick={() => setSelectedElement(element)}
+            onDragStart={() => dragStart(element)}
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={() => dragEnterMoveToChild(element.tagId)}
+          >
+            - {element.tagId}
+          </p>
+          {!frameElementProps[element.tagId].frameElementChildren?.length
+            ? null
+            : (
+              <FrameLayers
+                frameElements={
+                  frameElementProps[element.tagId].frameElementChildren || []
+                }
+                frameElementProps={frameElementProps}
+                selectedElement={selectedElement}
+                setFrameElements={setFrameElements}
+                setFrameElementProps={setFrameElementProps}
+                setSelectedElement={setSelectedElement}
+              />
+            )
+          }
+          <div
+            className="elementBreak"
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={() => dragEnterMoveNext(element)}
+          />
         </div>
       ))}
     </div>
