@@ -21,6 +21,7 @@ import SelectTag from "../../components/Tags/Select/Select"
 import SpanTag from "../../components/Tags/Span/Span"
 import TextAreaTag from "../../components/Tags/TextArea/TextArea"
 import UListTag from "../../components/Tags/Ul/Ul"
+import { HTMLStyleProperties } from "../../constants"
 import "./Home.css"
 
 const Home = () => {
@@ -138,12 +139,18 @@ const Home = () => {
         </div>
         <div className="rightPanelDiv3">
           <h3 className="rightPanelLabel">Insert style</h3>
-          <input
-            className="rightPanelInput"
-            placeholder="Style Name"
+          <select
+            className="rightPanelDropdown"
             value={newStyle.key}
-            onChange={(e) => setNewStyle({ ...newStyle, key: e.target.value })}
-          />
+            onChange={(e) => setNewStyle((oldStyle) => {
+              return { ...oldStyle, key: e.target.value }
+            })}
+          >
+            <option key={-1} value="">Select New Style</option>
+            {HTMLStyleProperties.map((styleName, index) => (
+              <option key={index} value={styleName}>{styleName}</option>
+            ))}
+          </select>
           <input
             className="rightPanelInput"
             placeholder="Style Value"
