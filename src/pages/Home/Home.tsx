@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import CallTag from "../../components/CallTag/CallTag"
+import FrameLayers from "../../components/FrameLayers/FrameLayers"
 import AnchorTag from "../../components/Tags/Anchor/Anchor"
 import ButtonTag from "../../components/Tags/Button/Button"
 import DivTag from "../../components/Tags/Div/Div"
@@ -18,17 +19,21 @@ import OptionTag from "../../components/Tags/Option/Option"
 import ParagraphTag from "../../components/Tags/Paragraph/Paragraph"
 import SelectTag from "../../components/Tags/Select/Select"
 import SpanTag from "../../components/Tags/Span/Span"
-import TextAreaTag from "../../components/Tags/TextArea/Textarea"
+import TextAreaTag from "../../components/Tags/TextArea/TextArea"
 import UListTag from "../../components/Tags/Ul/Ul"
 import "./Home.css"
 
 const Home = () => {
   const [allTags, setAllTags] = useState<AllTagsType>({})
-  const [frameElements, setFrameElements] = useState<FrameElementType>([])
+  const [frameElements, setFrameElements] = useState<Array<FrameElementType>>([])
   const [frameElementProps, setFrameElementProps] = useState<FrameElementPropType>({})
   const [newStyle, setNewStyle] = useState<{ key: string, value: string }>({ key: "", value: "" })
   const [newTag, setNewTag] = useState<string>("")
-  const [selectedTag, setSelectedTag] = useState<string>("")
+  const [selectedElement, setSelectedElement] = useState<FrameElementType>({
+    tag: "",
+    tagId: "",
+    parentTagId: "",
+  })
 
   useEffect(() => {
     setAllTags({
@@ -59,21 +64,27 @@ const Home = () => {
     <div className="container">
       <div className="leftPanel">
         <h3 className="leftPanelHeading">Frame Layers</h3>
-        <div className="leftPanelTags">
-          {Object.keys(frameElementProps).map((tagId) => (
-            <p
-              className="leftPanelTag"
-              onClick={() => setSelectedTag(tagId)}
-            >
-              - {tagId}
-            </p>
-          ))}
-        </div>
+        <FrameLayers
+          frameElements={frameElements}
+          frameElementProps={frameElementProps}
+          selectedElement={selectedElement}
+          setFrameElements={setFrameElements}
+          setFrameElementProps={setFrameElementProps}
+          setSelectedElement={setSelectedElement}
+        />
       </div>
       <div className="frame">
-        <DivTag id="frameContainer" style={{ height: "80%", width: "80%", backgroundColor: "#e9e9e9" }}>
+        <DivTag
+          id="frameContainer"
+          style={{ height: "80%", width: "80%", backgroundColor: "#e9e9e9" }}
+        >
           {frameElements.map((element) => (
-            <CallTag Tag={allTags[element.tag]} tagProps={frameElementProps[element.tagId]} />
+            <CallTag
+              allTags={allTags}
+              element={element}
+              frameElementProps={frameElementProps}
+              key={element.tagId}
+            />
           ))}
         </DivTag>
       </div>
@@ -100,7 +111,12 @@ const Home = () => {
               setFrameElementProps((prevProps) => {
                 return {
                   ...prevProps,
-                  [id]: { children: [], id: id, style: {}, value: "" }
+                  [id]: {
+                    frameElementChildren: [],
+                    id: id,
+                    style: {},
+                    value: ""
+                  }
                 }
               })
               setFrameElements((prevElements) => [
@@ -108,6 +124,7 @@ const Home = () => {
                 {
                   tag: newTag,
                   tagId: id,
+                  parentTagId: "",
                 },
               ])
             }}
@@ -117,7 +134,7 @@ const Home = () => {
         </div>
         <div className="rightPanelDiv2">
           <p className="rightPanelLabel">Selected Tag</p>
-          <p className="rightPanelTag">{!selectedTag ? "--" : selectedTag}</p>
+          <p className="rightPanelTag">{!selectedElement.tagId ? "--" : selectedElement.tagId}</p>
         </div>
         <div className="rightPanelDiv3">
           <h3 className="rightPanelLabel">Insert style</h3>
@@ -136,16 +153,16 @@ const Home = () => {
           <button
             className="rightPanelButton"
             onClick={() => {
-              if (!selectedTag) return
+              if (!selectedElement.tagId) return
               if (!newStyle.key || !newStyle.value) return
 
               setFrameElementProps((prevProps) => {
                 return {
                   ...prevProps,
-                  [selectedTag]: {
-                    ...prevProps[selectedTag],
+                  [selectedElement.tagId]: {
+                    ...prevProps[selectedElement.tagId],
                     style: {
-                      ...prevProps[selectedTag].style,
+                      ...prevProps[selectedElement.tagId].style,
                       [newStyle.key]: newStyle.value,
                     },
                   },

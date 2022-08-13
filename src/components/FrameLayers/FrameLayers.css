@@ -1,0 +1,15 @@
+.elementBreak {
+  padding: 2px;
+  visibility: hidden;
+}
+
+.tags {
+  padding-left: 10px;
+}
+
+.tag {
+  cursor: pointer;
+  font-size: small;
+  margin-bottom: 2px;
+  margin-top: 2px;
+}

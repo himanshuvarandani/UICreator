@@ -1,4 +1,5 @@
 type CallTagPropType = {
-  Tag: (props: TagPropType) => JSX.Element,
-  tagProps: TagPropType
+  allTags: AllTagsType,
+  frameElementProps: FrameElementPropType,
+  element: FrameElementType,
 }
