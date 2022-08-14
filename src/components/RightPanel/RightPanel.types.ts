@@ -1,0 +1,3 @@
+interface RightPanelPropType {
+  selectedElement: FrameElementType,
+}
