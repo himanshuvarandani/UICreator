@@ -35,6 +35,7 @@ const Home = () => {
     tagId: "",
     parentTagId: "",
   })
+  const [value, setValue] = useState<string>("")
 
   useEffect(() => {
     setAllTags({
@@ -172,6 +173,34 @@ const Home = () => {
                       ...prevProps[selectedElement.tagId].style,
                       [newStyle.key]: newStyle.value,
                     },
+                  },
+                }
+              })
+            }}
+          >
+            Add
+          </button>
+        </div>
+        <div className="rightPanelDiv3">
+          <h3 className="rightPanelLabel">Insert Value</h3>
+          <input
+            className="rightPanelInput"
+            placeholder="Style Value"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+          />
+          <button
+            className="rightPanelButton"
+            onClick={() => {
+              if (!selectedElement.tagId) return
+              if (!value) return
+
+              setFrameElementProps((prevProps) => {
+                return {
+                  ...prevProps,
+                  [selectedElement.tagId]: {
+                    ...prevProps[selectedElement.tagId],
+                    value,
                   },
                 }
               })
