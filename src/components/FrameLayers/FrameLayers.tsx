@@ -1,13 +1,13 @@
+import { useContext } from "react"
+import { AppContext } from "../../context/AppContext"
 import "./FrameLayers.css"
 
 const FrameLayers = ({
-  frameElements,
-  frameElementProps,
+  elements,
   selectedElement,
-  setFrameElements,
-  setFrameElementProps,
   setSelectedElement,
 }: FrameLayersPropType) => {
+  const context = useContext<AppContextType | null>(AppContext) as AppContextType
 
   const dragStart = (element: FrameElementType) => {
     setSelectedElement(element)
@@ -22,7 +22,7 @@ const FrameLayers = ({
     }
 
     if (!element.parentTagId) {
-      setFrameElements((prevElements) => {
+      context.setFrameElements((prevElements) => {
         const from = prevElements.indexOf(selectedElement)
         const to = prevElements.indexOf(element)+1
         prevElements.splice(from, 1)
@@ -30,7 +30,7 @@ const FrameLayers = ({
         return [ ...prevElements ]
       })
     } else {
-      setFrameElementProps((prevProps) => {
+      context.setFrameElementProps((prevProps) => {
         const children = prevProps[element.parentTagId].frameElementChildren
         const from = children?.indexOf(selectedElement) || 0
         const to = children?.indexOf(element) || 0
@@ -51,7 +51,7 @@ const FrameLayers = ({
     if (tagId === selectedElement.tagId) return
 
     if (!selectedElement.parentTagId) {
-      setFrameElementProps((prevProps) => {
+      context.setFrameElementProps((prevProps) => {
         const newProps = {
           ...prevProps,
           [tagId]: {
@@ -68,13 +68,13 @@ const FrameLayers = ({
         }
         return newProps
       })
-      setFrameElements((prevElements) => {
+      context.setFrameElements((prevElements) => {
         const newElements = prevElements.
           filter((element) => element.tagId !== selectedElement.tagId)
         return newElements
       })
     } else {
-      setFrameElementProps((prevProps) => {
+      context.setFrameElementProps((prevProps) => {
         let children = 
           prevProps[selectedElement.parentTagId].frameElementChildren?.
           filter((child) => child.tagId !== selectedElement.tagId)
@@ -108,7 +108,7 @@ const FrameLayers = ({
 
   return (
     <div className="tags">
-      {frameElements.map((element, index) => (
+      {elements.map((element, index) => (
         <div key={index}>
           <p
             className="tag"
@@ -121,17 +121,14 @@ const FrameLayers = ({
           >
             - {element.tagId}
           </p>
-          {!frameElementProps[element.tagId].frameElementChildren?.length
+          {!context.frameElementProps[element.tagId].frameElementChildren?.length
             ? null
             : (
               <FrameLayers
-                frameElements={
-                  frameElementProps[element.tagId].frameElementChildren || []
+                elements={
+                  context.frameElementProps[element.tagId].frameElementChildren || []
                 }
-                frameElementProps={frameElementProps}
                 selectedElement={selectedElement}
-                setFrameElements={setFrameElements}
-                setFrameElementProps={setFrameElementProps}
                 setSelectedElement={setSelectedElement}
               />
             )

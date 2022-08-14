@@ -1,33 +1,13 @@
-import { useEffect, useState } from "react"
+import { useContext, useState } from "react"
 import CallTag from "../../components/CallTag/CallTag"
 import FrameLayers from "../../components/FrameLayers/FrameLayers"
-import AnchorTag from "../../components/Tags/Anchor/Anchor"
-import ButtonTag from "../../components/Tags/Button/Button"
 import DivTag from "../../components/Tags/Div/Div"
-import H1Tag from "../../components/Tags/Headings/H1"
-import H2Tag from "../../components/Tags/Headings/H2"
-import H3Tag from "../../components/Tags/Headings/H3"
-import H4Tag from "../../components/Tags/Headings/H4"
-import H5Tag from "../../components/Tags/Headings/H5"
-import H6Tag from "../../components/Tags/Headings/H6"
-import ImageTag from "../../components/Tags/Image/Image"
-import InputTag from "../../components/Tags/Input/Input"
-import LabelTag from "../../components/Tags/Label/Label"
-import LITag from "../../components/Tags/LI/LI"
-import OListTag from "../../components/Tags/OList/OList"
-import OptionTag from "../../components/Tags/Option/Option"
-import ParagraphTag from "../../components/Tags/Paragraph/Paragraph"
-import SelectTag from "../../components/Tags/Select/Select"
-import SpanTag from "../../components/Tags/Span/Span"
-import TextAreaTag from "../../components/Tags/TextArea/TextArea"
-import UListTag from "../../components/Tags/Ul/Ul"
 import { HTMLStyleProperties } from "../../constants"
+import { AppContext } from "../../context/AppContext"
 import "./Home.css"
 
 const Home = () => {
-  const [allTags, setAllTags] = useState<AllTagsType>({})
-  const [frameElements, setFrameElements] = useState<Array<FrameElementType>>([])
-  const [frameElementProps, setFrameElementProps] = useState<FrameElementPropType>({})
+  const context = useContext<AppContextType | null>(AppContext) as AppContextType
   const [newStyle, setNewStyle] = useState<{ key: string, value: string }>({ key: "", value: "" })
   const [newTag, setNewTag] = useState<string>("")
   const [selectedElement, setSelectedElement] = useState<FrameElementType>({
@@ -37,41 +17,13 @@ const Home = () => {
   })
   const [value, setValue] = useState<string>("")
 
-  useEffect(() => {
-    setAllTags({
-      "a": AnchorTag,
-      "button": ButtonTag,
-      "div": DivTag,
-      "h1": H1Tag,
-      "h2": H2Tag,
-      "h3": H3Tag,
-      "h4": H4Tag,
-      "h5": H5Tag,
-      "h6": H6Tag,
-      "image": ImageTag,
-      "input": InputTag,
-      "label": LabelTag,
-      "li": LITag,
-      "ol": OListTag,
-      "option": OptionTag,
-      "p": ParagraphTag,
-      "select": SelectTag,
-      "span": SpanTag,
-      "textarea": TextAreaTag,
-      "ul": UListTag,
-    })
-  }, [])
-  
   return (
     <div className="container">
       <div className="leftPanel">
         <h3 className="leftPanelHeading">Frame Layers</h3>
         <FrameLayers
-          frameElements={frameElements}
-          frameElementProps={frameElementProps}
+          elements={context.frameElements}
           selectedElement={selectedElement}
-          setFrameElements={setFrameElements}
-          setFrameElementProps={setFrameElementProps}
           setSelectedElement={setSelectedElement}
         />
       </div>
@@ -80,11 +32,9 @@ const Home = () => {
           id="frameContainer"
           style={{ height: "80%", width: "80%", backgroundColor: "#e9e9e9" }}
         >
-          {frameElements.map((element) => (
+          {context.frameElements.map((element) => (
             <CallTag
-              allTags={allTags}
               element={element}
-              frameElementProps={frameElementProps}
               key={element.tagId}
             />
           ))}
@@ -100,7 +50,7 @@ const Home = () => {
             onChange={(e) => setNewTag(e.target.value)}
           >
             <option key={-1} value="">Select Tag</option>
-            {Object.keys(allTags).map((tag, index) => (
+            {Object.keys(context.allTags).map((tag, index) => (
               <option key={index} value={tag}>{tag}</option>
             ))}
           </select>
@@ -109,8 +59,8 @@ const Home = () => {
             onClick={() => {
               if (!newTag) return
 
-              const id: string = `${newTag}-${frameElements.length+1}`
-              setFrameElementProps((prevProps) => {
+              const id: string = `${newTag}-${Object.keys(context.frameElementProps).length+1}`
+              context.setFrameElementProps((prevProps) => {
                 return {
                   ...prevProps,
                   [id]: {
@@ -121,7 +71,7 @@ const Home = () => {
                   }
                 }
               })
-              setFrameElements((prevElements) => [
+              context.setFrameElements((prevElements) => [
                 ...prevElements,
                 {
                   tag: newTag,
@@ -164,7 +114,7 @@ const Home = () => {
               if (!selectedElement.tagId) return
               if (!newStyle.key || !newStyle.value) return
 
-              setFrameElementProps((prevProps) => {
+              context.setFrameElementProps((prevProps) => {
                 return {
                   ...prevProps,
                   [selectedElement.tagId]: {
@@ -195,7 +145,7 @@ const Home = () => {
               if (!selectedElement.tagId) return
               if (!value) return
 
-              setFrameElementProps((prevProps) => {
+              context.setFrameElementProps((prevProps) => {
                 return {
                   ...prevProps,
                   [selectedElement.tagId]: {

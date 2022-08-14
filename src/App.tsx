@@ -1,14 +1,17 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import "./App.css"
+import AppProvider from "./context/AppContext"
 import Home from "./pages/Home/Home"
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-      </Routes>
-    </BrowserRouter>
+    <AppProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+        </Routes>
+      </BrowserRouter>
+    </AppProvider>
   )
 }
 

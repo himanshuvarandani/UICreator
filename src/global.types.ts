@@ -1,5 +1,13 @@
 interface AllTagsType { [key: string]: (props: TagPropType) => JSX.Element }
 
+interface AppContextType {
+  allTags: AllTagsType,
+  frameElements: Array<FrameElementType>,
+  frameElementProps: FrameElementPropType,
+  setFrameElements: React.Dispatch<React.SetStateAction<Array<FrameElementType>>>,
+  setFrameElementProps: React.Dispatch<React.SetStateAction<FrameElementPropType>>,
+}
+
 interface FrameElementPropType { [key: string]: TagPropType }
 
 interface FrameElementType {
