@@ -4,15 +4,20 @@ import { AppContext } from "../../context/AppContext"
 import "./RightPanel.css"
 
 const RightPanel = ({ selectedElement }: RightPanelPropType) => {
-  const context = useContext<AppContextType | null>(AppContext) as AppContextType
-  const [newStyle, setNewStyle] = useState<{ key: string, value: string }>({ key: "", value: "" })
+  const context =
+    useContext<AppContextType | null>(AppContext) as AppContextType
+  const [newStyle, setNewStyle] = useState<{ key: string, value: string }>({
+    key: "",
+    value: ""
+  })
   const [newTag, setNewTag] = useState<string>("")
   const [value, setValue] = useState<string>("")
 
   const insertNewTag = () => {
     if (!newTag) return
 
-    const id: string = `${newTag}-${Object.keys(context.frameElementProps).length+1}`
+    const id: string = 
+      `${newTag}-${Object.keys(context.frameElementProps).length+1}`
     context.setFrameElementProps((prevProps) => {
       return {
         ...prevProps,
@@ -91,7 +96,27 @@ const RightPanel = ({ selectedElement }: RightPanelPropType) => {
       </div>
       <div className="rightPanelDiv2">
         <p className="rightPanelLabel">Selected Tag</p>
-        <p className="rightPanelTag">{!selectedElement.tagId ? "--" : selectedElement.tagId}</p>
+        <p className="rightPanelTag">
+          {!selectedElement.tagId ? "--" : selectedElement.tagId}
+        </p>
+      </div>
+      <div className="rightPanelDiv4">
+        <p className="rightPanelLabel">Styles Applied</p>
+        {!context.frameElementProps[selectedElement.tagId]
+          ? (<p>No styles applied</p>)
+          : !Object.keys(
+            context.frameElementProps[selectedElement.tagId].style || {}
+          ).length
+            ? (<p>No styles applied</p>)
+            : Object.entries(
+              context.frameElementProps[selectedElement.tagId].style || {}
+            ).map(([styleName, styleValue]) => (
+              <div className="rightPanelStyleDiv">
+                <p className="rightPanelStyleName">{styleName}</p>
+                <p>{styleValue}</p>
+              </div>
+            ))
+        }
       </div>
       <div className="rightPanelDiv3">
         <h3 className="rightPanelLabel">Insert style</h3>
